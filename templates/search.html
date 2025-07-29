@@ -1,0 +1,23 @@
+<!-- templates/search.html -->
+
+{% extends "layout.html" %}
+
+{% block title %}MangapillPlus - Search{% endblock %}
+
+{% block content %}
+    <center>
+        <h1>Search</h1>
+    </center>
+
+    {% if mangas %}
+        <div class="search-grid">
+            {% for manga in mangas %}
+                <a class="manga-card" href="{{ url_for('info', id=manga.id) }}">
+                    <img class="manga-cover" src="https://mppapi.vercel.app/cover?id={{ manga.id }}" alt="{{ manga.title }}"> 
+                    <div class="manga-title">{{ manga.title }}</div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+

@@ -1,0 +1,27 @@
+<!-- templates/info.html -->
+
+{% extends "layout.html" %}
+
+{% block title %}{{ manga.title }} - MangapillPlus{% endblock %}
+
+{% block content %}
+    <div class="manga-info-container">
+        <div class="manga-cover-container">
+            <img src="https://mppapi.vercel.app/cover?id={{ manga.id }}" alt="{{ manga.title }} cover" class="manga-info-cover">
+        </div>
+        <div class="manga-info-details">
+            <h2>{{ manga.title }}</h2>
+            <p class="manga-description">{{ manga.description }}</p>
+        </div>
+    </div>
+
+    <h3>Chapters</h3>
+    <div class="chapters-grid">
+        {% for chapter in manga.chapters %}
+            <a class="chapter-box" href="{{ url_for('read') }}?id={{ manga.id }}&chapter={{ chapter.id }}">
+                {{ chapter.title or 'Chapter ' ~ chapter.chapter }}
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
+

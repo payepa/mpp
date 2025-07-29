@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %} {{ manga.title }} - {{ manga.chapter_title }} {% endblock %}
+
+{% block content %}
+    <h2 class="reader-title"> {{ manga.title }} - {{ manga.chapter_title }} </h2>
+
+    <div class="reader-pages">
+        {% for page in manga.pages %}
+            <img src="https://mppapi.vercel.app/{{page['img']}}"
+                 alt="{{ manga.title }} page {{ loop.index }}"
+                 class="reader-image
+                        {% if loop.first %} first-image {% endif %}
+                        {% if loop.last %} last-image {% endif %}">
+        {% endfor %}
+    </div>
+{% endblock %}
+
