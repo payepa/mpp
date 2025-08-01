@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-BASE_URL = "https://mppapi.vercel.app/"
-# BASE_URL = "http://localhost:8000/" # Local testing
+#BASE_URL = "https://mppapi.vercel.app/"
+BASE_URL = "http://localhost:8000/" # Local testing
 
 @app.route("/")
 @app.route("/home")
