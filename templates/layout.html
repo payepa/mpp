@@ -1,5 +1,4 @@
 <!-- templates/layout.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,18 +8,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="nav-section nav-center">
-        <form action="{{ url_for('search') }}" method="get">
-            <input type="text" name="q" placeholder="Search manga" required>
-        </form>
-    </div>
-    <main>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">Mangapill<span>Plus</span></a>
+            <form action="{{ url_for('search') }}" method="get" class="search-form">
+                <input type="text" name="q" placeholder="Search manga..." required>
+            </form>
+        </div>
+    </header>
+
+    <main class="main-content">
         {% block content %}{% endblock %}
     </main>
 
     <footer>
         <p>&copy; 2025 MangapillPlus</p>
     </footer>
+    
+    {% block scripts %}{% endblock %}
 </body>
 </html>
 

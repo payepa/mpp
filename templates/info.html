@@ -1,5 +1,4 @@
 <!-- templates/info.html -->
-
 {% extends "layout.html" %}
 
 {% block title %}{{ manga.title }} - MangapillPlus{% endblock %}
@@ -12,6 +11,10 @@
         <div class="manga-info-details">
             <h2>{{ manga.title }}</h2>
             <p class="manga-description">{{ manga.description }}</p>
+            <p></p>
+            {% if manga.genres %}
+                <p>Genres: {{ manga.genres | join(', ') }}</p>
+            {% endif %}
         </div>
     </div>
 

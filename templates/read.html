@@ -1,18 +1,116 @@
+<!-- templates/search.html -->
 {% extends "layout.html" %}
 
-{% block title %} {{ manga.title }} - {{ manga.chapter_title }} {% endblock %}
+{% block title %}{{ manga.title }} - {{ manga.chapter_title }}{% endblock %}
 
 {% block content %}
-    <h2 class="reader-title"> {{ manga.title }} - {{ manga.chapter_title }} </h2>
+<div class="reader-wrapper">
+    <h2 class="reader-title">{{ manga.title }} - {{ manga.chapter_title }}</h2>
 
+    <!-- Controls Above the Reader -->
+    <div class="reader-controls-wrapper">
+        <div class="reader-controls">
+            <!-- Chapter Selector Button -->
+            <button class="open-modal-button" onclick="openChapterModal()">Select Chapter</button>
+
+            <!-- Prev/Next Buttons -->
+            <div class="chapter-nav">
+                <a class="chapter-button {% if not manga.prev_chapter %}disabled{% endif %}"
+                   href="{{ url_for('read') }}?id={{ manga.id }}&chapter={{ manga.prev_chapter or '' }}">
+                    ‹ Prev
+                </a>
+                <a class="chapter-button {% if not manga.next_chapter %}disabled{% endif %}"
+                   href="{{ url_for('read') }}?id={{ manga.id }}&chapter={{ manga.next_chapter or '' }}">
+                    Next ›
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reader Images -->
     <div class="reader-pages">
         {% for page in manga.pages %}
-            <img src="https://mppapi.vercel.app/{{page['img']}}"
+            <img src="https://mppapi.vercel.app/{{ page.img }}"
                  alt="{{ manga.title }} page {{ loop.index }}"
                  class="reader-image
-                        {% if loop.first %} first-image {% endif %}
-                        {% if loop.last %} last-image {% endif %}">
+                        {% if loop.first %}first-image{% endif %}
+                        {% if loop.last %}last-image{% endif %}">
         {% endfor %}
     </div>
+
+    <!-- Controls Below the Reader -->
+    <div class="reader-controls-wrapper">
+        <div class="reader-controls">
+            <!-- Chapter Selector Button -->
+            <button class="open-modal-button" onclick="openChapterModal()">Select Chapter</button>
+
+            <!-- Prev/Next Buttons -->
+            <div class="chapter-nav">
+                <a class="chapter-button {% if not manga.prev_chapter %}disabled{% endif %}"
+                   href="{{ url_for('read') }}?id={{ manga.id }}&chapter={{ manga.prev_chapter or '' }}">
+                    ‹ Prev
+                </a>
+                <a class="chapter-button {% if not manga.next_chapter %}disabled{% endif %}"
+                   href="{{ url_for('read') }}?id={{ manga.id }}&chapter={{ manga.next_chapter or '' }}">
+                    Next ›
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chapter Selector Modal -->
+    <div id="chapterModal" class="chapter-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><a href={{ url_for('info', id=manga.id) }}>{{ manga.title }} chapters</a></h3>
+                <button class="close-modal-button" onclick="closeChapterModal()">&times;</button>
+            </div>
+            <div class="chapters-grid modal-chapter-grid" id="chapterGrid">
+                {% for chapter in manga.chapters %}
+                    <a class="chapter-box {% if chapter.id == manga.current_chapter_id %}active{% endif %}"
+                       href="{{ url_for('read') }}?id={{ manga.id }}&chapter={{ chapter.id }}"
+                       id="chapter-{{ chapter.id }}">
+                        {{ chapter.title or 'Chapter ' ~ chapter.chapter }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openChapterModal() {
+    const modal = document.getElementById('chapterModal');
+    modal.style.display = 'block';
+
+    // Scroll to current chapter
+    const active = document.querySelector('.chapter-box.active');
+    if (active) {
+        setTimeout(() => {
+            active.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }, 100);
+    }
+}
+
+function closeChapterModal() {
+    document.getElementById('chapterModal').style.display = 'none';
+}
+
+// Close modal on Escape key or clicking outside
+window.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeChapterModal();
+    }
+});
+
+window.addEventListener('click', function (event) {
+    const modal = document.getElementById('chapterModal');
+    if (event.target === modal) {
+        closeChapterModal();
+    }
+});
+</script>
 {% endblock %}
 

@@ -30,7 +30,6 @@ def info():
 def read():
     manga_id = request.args.get('id')
     chapter = request.args.get('chapter') or 1
-
     manga = requests.get(f"{BASE_URL}read?id={manga_id}&chapter={chapter}").json()
 
     return render_template('read.html', manga=manga)
